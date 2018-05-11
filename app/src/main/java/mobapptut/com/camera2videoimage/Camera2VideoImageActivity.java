@@ -35,9 +35,12 @@ import android.util.SparseIntArray;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.MediaController;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -55,7 +58,7 @@ import java.util.List;
 
 public class Camera2VideoImageActivity extends AppCompatActivity {
 
-    private static final String TAG = "Camera2VideoImageActivi";
+    private static final String TAG = "Camera2VideoImageActivity";
 
     private static final int REQUEST_CAMERA_PERMISSION_RESULT = 0;
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION_RESULT = 1;
@@ -238,7 +241,8 @@ public class Camera2VideoImageActivity extends AppCompatActivity {
                 }
             };
     private CaptureRequest.Builder mCaptureRequestBuilder;
-
+    private RadioGroup mRadioGroup;
+    private Button mNextButton;
     private ImageButton mRecordImageButton;
     private ImageButton mStillImageButton;
     private boolean mIsRecording = false;
@@ -248,6 +252,9 @@ public class Camera2VideoImageActivity extends AppCompatActivity {
     private String mVideoFileName;
     private File mImageFolder;
     private String mImageFileName;
+
+    private File directory;
+    private File[] files;
 
     private static SparseIntArray ORIENTATIONS = new SparseIntArray();
     static {
@@ -270,20 +277,33 @@ public class Camera2VideoImageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera2_video_image);
-        //viewing video
-        String vid_path=Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).getAbsolutePath()+"/camera2VideoImage/";
-        //listing the files in the folder
-        Log.d("Files", "Path: " + vid_path);
-        File directory = new File(vid_path);
-        File[] files = directory.listFiles();
-        Log.d("Files", "Size: "+ files.length);
-        for (int i = 0; i < files.length; i++)
-        {
-            Log.d("Files", "FileName:" + files[i].getName());
-        }
-        //running a video
+
+        mNextButton=(Button) findViewById(R.id.button);
         final VideoView videoView = (VideoView) findViewById(R.id.videoView);
-        videoView.setVideoPath(vid_path+files[0].getName());
+//        final String vid_path=Environment.getExternalStorageDirectory().getAbsolutePath()+"/Movies/camera2VideoImage";
+        final String vid_path=Environment.getExternalStorageDirectory().getAbsolutePath()+"/ExperimentData/";
+        //Radio buttons initialising the folder and files list
+        mRadioGroup=(RadioGroup) findViewById(R.id.radio_group);
+//        int radioButtonID = mRadioGroup.getCheckedRadioButtonId();
+//        View radioButton = mRadioGroup.findViewById(radioButtonID);
+//        int idx = mRadioGroup.indexOfChild(radioButton);
+
+
+        //listing the files in the folder
+        String value =((RadioButton)findViewById(mRadioGroup.getCheckedRadioButtonId())).getText().toString();
+        Log.d("Files", vid_path+value);
+        directory = new File(vid_path+value);
+        files = directory.listFiles();
+        if(files.length>0){
+            videoView.setVideoPath(vid_path+files[0].getName());
+//        Log.d("Files", "Size: "+ files.length);
+        }
+//        Log.d("Files", "Size: "+ files.length);
+//        for (int i = 0; i < files.length; i++)
+//        {
+//            Log.d("Files", "FileName:" + files[i].getName());
+//        }
+//        //running a video
         MediaController mMediaPlayer=new MediaController(this);
         videoView.setMediaController(mMediaPlayer);
         videoView.start();
@@ -295,6 +315,35 @@ public class Camera2VideoImageActivity extends AppCompatActivity {
 
             }
         });
+        //when radio button changed
+        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                String value =((RadioButton)findViewById(mRadioGroup.getCheckedRadioButtonId())).getText().toString();
+                Toast.makeText(getBaseContext(), value, Toast.LENGTH_SHORT).show();
+                Log.d("Files", vid_path+value);
+                directory = new File(vid_path+value);
+                files = directory.listFiles();
+                if(files.length>0){
+                    Log.d("Files", "Size: "+ files.length);
+                    videoView.setVideoPath(vid_path+value+"/"+files[0].getName());
+                }
+//                File directory = new File(vid_path+value);
+//                files = directory.listFiles();
+//
+//                videoView.setVideoPath(vid_path+files[1].getName());
+            }
+        });
+        //setting video change buttons
+        mNextButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                int fsize=files.length;
+                if(fsize>0) {
+//                    videoView.setVideoPath(vid_path + files[1].getName());
+                }
+            }
+        });
+
 
         createVideoFolder();
         createImageFolder();

@@ -50,15 +50,73 @@
         android:layout_height="300dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="96dp" />
+        android:layout_marginTop="150dp" />
 
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/textureView"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="242dp"
+        android:layout_marginTop="229dp"
         android:text="Button" />
+
+
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="1000dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/radio1"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Boredom"
+            android:textSize="20sp"/>
+
+        <RadioButton
+            android:id="@+id/radio2"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Confusion"
+            android:textSize="20sp"/>
+
+        <RadioButton
+            android:id="@+id/radio3"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Delight"
+            android:textSize="20sp"/>
+        <RadioButton
+            android:id="@+id/radio4"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Frustration"
+            android:textSize="20sp"/>
+        <RadioButton
+            android:id="@+id/radio5"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Surprised"
+            android:textSize="20sp"/>
+        <RadioButton
+            android:id="@+id/radio6"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Neutral"
+            android:textSize="20sp"/>
+    </RadioGroup>
+
 
 </RelativeLayout>
