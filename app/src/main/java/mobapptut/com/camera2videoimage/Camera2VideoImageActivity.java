@@ -392,7 +392,7 @@ public class Camera2VideoImageActivity extends AppCompatActivity {
         try {
             for(String cameraId : cameraManager.getCameraIdList()){
                 CameraCharacteristics cameraCharacteristics = cameraManager.getCameraCharacteristics(cameraId);
-                if(cameraCharacteristics.get(CameraCharacteristics.LENS_FACING) ==
+                if(cameraCharacteristics.get(CameraCharacteristics.LENS_FACING) !=    // amogh changed == to != so that lens facing front can be used.
                         CameraCharacteristics.LENS_FACING_FRONT){
                     continue;
                 }
