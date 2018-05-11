@@ -18,6 +18,7 @@ import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.CamcorderProfile;
 import android.media.Image;
 import android.media.ImageReader;
+import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Build;
@@ -36,7 +37,9 @@ import android.view.TextureView;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
+import android.widget.MediaController;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -267,6 +270,31 @@ public class Camera2VideoImageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera2_video_image);
+        //viewing video
+        String vid_path=Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).getAbsolutePath()+"/camera2VideoImage/";
+        //listing the files in the folder
+        Log.d("Files", "Path: " + vid_path);
+        File directory = new File(vid_path);
+        File[] files = directory.listFiles();
+        Log.d("Files", "Size: "+ files.length);
+        for (int i = 0; i < files.length; i++)
+        {
+            Log.d("Files", "FileName:" + files[i].getName());
+        }
+        //running a video
+        final VideoView videoView = (VideoView) findViewById(R.id.videoView);
+        videoView.setVideoPath(vid_path+files[0].getName());
+        MediaController mMediaPlayer=new MediaController(this);
+        videoView.setMediaController(mMediaPlayer);
+        videoView.start();
+        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+
+                videoView.start();
+
+            }
+        });
 
         createVideoFolder();
         createImageFolder();
