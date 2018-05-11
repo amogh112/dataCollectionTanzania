@@ -11,28 +11,27 @@
         android:layout_height="300dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="68dp" />
+        android:layout_marginBottom="150dp" />
 
     <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/videoOnlineImageButton"
-        android:contentDescription="@string/video_button"
-        android:src="@mipmap/btn_video_online"
-        android:layout_marginBottom="36dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="49dp" />
-
-    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/button"
+        android:layout_marginBottom="232dp"
+        android:contentDescription="@string/video_button"
+        android:src="@mipmap/btn_video_online" />
+
+    <ImageButton
         android:id="@+id/cameraImageButton2"
-        android:contentDescription="@string/camera_button"
-        android:src="@mipmap/btn_camera"
-        android:layout_alignTop="@+id/videoOnlineImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="57dp" />
+        android:layout_alignTop="@+id/videoOnlineImageButton"
+        android:layout_marginStart="269dp"
+        android:contentDescription="@string/camera_button"
+        android:src="@mipmap/btn_camera" />
 
     <Chronometer
         android:layout_width="wrap_content"
@@ -60,14 +59,14 @@
         android:layout_alignParentTop="true"
         android:layout_marginEnd="242dp"
         android:layout_marginTop="229dp"
-        android:text="Button" />
+        android:text="Next" />
 
 
     <RadioGroup
         android:id="@+id/radio_group"
         android:layout_width="1000dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="100dp"
         android:layout_centerHorizontal="true"
         android:orientation="horizontal" >
 

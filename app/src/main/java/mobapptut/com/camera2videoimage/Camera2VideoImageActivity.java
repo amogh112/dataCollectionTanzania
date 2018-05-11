@@ -255,6 +255,7 @@ public class Camera2VideoImageActivity extends AppCompatActivity {
 
     private File directory;
     private File[] files;
+    private int fileIndex;
 
     private static SparseIntArray ORIENTATIONS = new SparseIntArray();
     static {
@@ -295,7 +296,8 @@ public class Camera2VideoImageActivity extends AppCompatActivity {
         directory = new File(vid_path+value);
         files = directory.listFiles();
         if(files.length>0){
-            videoView.setVideoPath(vid_path+files[0].getName());
+            videoView.setVideoPath(vid_path+value+"/"+files[0].getName());
+            fileIndex=0;
 //        Log.d("Files", "Size: "+ files.length);
         }
 //        Log.d("Files", "Size: "+ files.length);
@@ -326,6 +328,7 @@ public class Camera2VideoImageActivity extends AppCompatActivity {
                 if(files.length>0){
                     Log.d("Files", "Size: "+ files.length);
                     videoView.setVideoPath(vid_path+value+"/"+files[0].getName());
+                    fileIndex=0;
                 }
 //                File directory = new File(vid_path+value);
 //                files = directory.listFiles();
@@ -338,8 +341,10 @@ public class Camera2VideoImageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 int fsize=files.length;
-                if(fsize>0) {
-//                    videoView.setVideoPath(vid_path + files[1].getName());
+                if(fsize>1) {
+                    fileIndex=(fileIndex+1)%fsize;
+                    String value =((RadioButton)findViewById(mRadioGroup.getCheckedRadioButtonId())).getText().toString();
+                    videoView.setVideoPath(vid_path +value+"/"+ files[fileIndex].getName());
                 }
             }
         });
