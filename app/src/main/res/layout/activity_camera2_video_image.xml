@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,64 +8,64 @@
 
     <TextureView
         android:id="@+id/textureView"
-        android:layout_width="400dp"
-        android:layout_height="300dp"
+        android:layout_width="295dp"
+        android:layout_height="227dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="150dp" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="280dp"
+        android:layout_marginEnd="44dp" />
 
     <ImageButton
         android:id="@+id/videoOnlineImageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/button"
-        android:layout_marginBottom="232dp"
+        android:layout_width="106dp"
+        android:layout_height="85dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/textureView"
+        android:layout_marginEnd="385dp"
         android:contentDescription="@string/video_button"
         android:src="@mipmap/btn_video_online" />
 
     <ImageButton
         android:id="@+id/cameraImageButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/videoOnlineImageButton"
-        android:layout_marginStart="269dp"
+        android:layout_width="107dp"
+        android:layout_height="78dp"
+        android:layout_alignBottom="@+id/textureView"
+        android:layout_alignStart="@+id/videoOnlineImageButton"
         android:contentDescription="@string/camera_button"
         android:src="@mipmap/btn_camera" />
 
     <Chronometer
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/chronometer"
-        android:visibility="invisible"
+        android:layout_width="105dp"
+        android:layout_height="43dp"
+        android:layout_above="@+id/videoOnlineImageButton"
+        android:layout_alignStart="@+id/videoOnlineImageButton"
         android:textColor="#ff0000"
         android:textSize="25dp"
-        android:layout_above="@+id/videoOnlineImageButton"
-        android:layout_alignStart="@+id/videoOnlineImageButton" />
+        android:visibility="invisible" />
 
     <VideoView
         android:id="@+id/videoView"
-        android:layout_width="400dp"
-        android:layout_height="300dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="150dp" />
+        android:layout_width="683dp"
+        android:layout_height="459dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="158dp"
+        android:layout_marginStart="58dp" />
 
     <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="242dp"
-        android:layout_marginTop="229dp"
+        android:layout_width="681dp"
+        android:layout_height="66dp"
+        android:layout_above="@+id/videoView"
+        android:layout_alignStart="@+id/videoView"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:text="Next" />
 
 
     <RadioGroup
         android:id="@+id/radio_group"
-        android:layout_width="1000dp"
+        android:layout_width="1100dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:layout_centerHorizontal="true"
@@ -77,7 +78,7 @@
             android:layout_height="wrap_content"
             android:checked="true"
             android:text="Boredom"
-            android:textSize="20sp"/>
+            android:textSize="25sp"/>
 
         <RadioButton
             android:id="@+id/radio2"
@@ -85,7 +86,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Confusion"
-            android:textSize="20sp"/>
+            android:textSize="25sp"/>
 
         <RadioButton
             android:id="@+id/radio3"
@@ -93,29 +94,48 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Delight"
-            android:textSize="20sp"/>
+            android:textSize="25sp"/>
         <RadioButton
             android:id="@+id/radio4"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Frustration"
-            android:textSize="20sp"/>
+            android:textSize="25sp"/>
         <RadioButton
             android:id="@+id/radio5"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Surprised"
-            android:textSize="20sp"/>
+            android:textSize="25sp"/>
         <RadioButton
             android:id="@+id/radio6"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Neutral"
-            android:textSize="20sp"/>
+            android:textSize="25sp"/>
     </RadioGroup>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="683dp"
+        android:layout_height="459dp"
+        android:layout_alignStart="@+id/videoView"
+        android:layout_alignTop="@+id/videoView"
+        app:srcCompat="@android:drawable/list_selector_background" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="44dp"
+        android:text="Emotion"
+        android:textSize="30sp" />
 
 
 </RelativeLayout>
+

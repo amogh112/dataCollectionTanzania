@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
@@ -38,6 +40,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -55,6 +58,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class Camera2VideoImageActivity extends AppCompatActivity {
 
@@ -247,6 +251,7 @@ public class Camera2VideoImageActivity extends AppCompatActivity {
     private ImageButton mStillImageButton;
     private boolean mIsRecording = false;
     private boolean mIsTimelapse = false;
+    private ImageView mImageView;
 
     private File mVideoFolder;
     private String mVideoFileName;
@@ -255,7 +260,8 @@ public class Camera2VideoImageActivity extends AppCompatActivity {
 
     private File directory;
     private File[] files;
-    private int fileIndex;
+    private int fileIndex; //to track the file number when using next button
+    private String value; //the emotion
 
     private static SparseIntArray ORIENTATIONS = new SparseIntArray();
     static {
@@ -278,7 +284,7 @@ public class Camera2VideoImageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera2_video_image);
-
+        mImageView=(ImageView) findViewById(R.id.imageView);
         mNextButton=(Button) findViewById(R.id.button);
         final VideoView videoView = (VideoView) findViewById(R.id.videoView);
 //        final String vid_path=Environment.getExternalStorageDirectory().getAbsolutePath()+"/Movies/camera2VideoImage";
@@ -291,7 +297,7 @@ public class Camera2VideoImageActivity extends AppCompatActivity {
 
 
         //listing the files in the folder
-        String value =((RadioButton)findViewById(mRadioGroup.getCheckedRadioButtonId())).getText().toString();
+        value =((RadioButton)findViewById(mRadioGroup.getCheckedRadioButtonId())).getText().toString();
         Log.d("Files", vid_path+value);
         directory = new File(vid_path+value);
         files = directory.listFiles();
@@ -320,14 +326,17 @@ public class Camera2VideoImageActivity extends AppCompatActivity {
         //when radio button changed
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                String value =((RadioButton)findViewById(mRadioGroup.getCheckedRadioButtonId())).getText().toString();
-                Toast.makeText(getBaseContext(), value, Toast.LENGTH_SHORT).show();
+                value =((RadioButton)findViewById(mRadioGroup.getCheckedRadioButtonId())).getText().toString();
+//                Toast.makeText(getBaseContext(), value, Toast.LENGTH_SHORT).show();
                 Log.d("Files", vid_path+value);
                 directory = new File(vid_path+value);
                 files = directory.listFiles();
                 if(files.length>0){
                     Log.d("Files", "Size: "+ files.length);
+                    mImageView.setVisibility(View.INVISIBLE);
+                    videoView.setVisibility(View.VISIBLE);
                     videoView.setVideoPath(vid_path+value+"/"+files[0].getName());
+                    videoView.start();
                     fileIndex=0;
                 }
 //                File directory = new File(vid_path+value);
@@ -343,8 +352,21 @@ public class Camera2VideoImageActivity extends AppCompatActivity {
                 int fsize=files.length;
                 if(fsize>1) {
                     fileIndex=(fileIndex+1)%fsize;
-                    String value =((RadioButton)findViewById(mRadioGroup.getCheckedRadioButtonId())).getText().toString();
-                    videoView.setVideoPath(vid_path +value+"/"+ files[fileIndex].getName());
+                    value =((RadioButton)findViewById(mRadioGroup.getCheckedRadioButtonId())).getText().toString();
+                    String separator=".";
+//                    Log.d("imagecheck",String.valueOf(!files[fileIndex].getName().split(Pattern.quote(separator))[1].equals("mp4")));
+                    if(!files[fileIndex].getName().split(Pattern.quote(separator))[1].equals("mp4")){
+                        mImageView.setVisibility(View.VISIBLE);
+                        videoView.setVisibility(View.INVISIBLE);
+                        Bitmap myBitmap = BitmapFactory.decodeFile(vid_path +value+"/"+ files[fileIndex].getName());
+                        mImageView.setImageBitmap(myBitmap);
+                    }
+                    else {
+                        videoView.setVisibility(View.VISIBLE);
+                        mImageView.setVisibility(View.INVISIBLE);
+                        videoView.setVideoPath(vid_path + value + "/" + files[fileIndex].getName());
+                        videoView.start();
+                    }
                 }
             }
         });
@@ -393,15 +415,15 @@ public class Camera2VideoImageActivity extends AppCompatActivity {
                 }
             }
         });
-        mRecordImageButton.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                mIsTimelapse =true;
-                mRecordImageButton.setImageResource(R.mipmap.btn_timelapse);
-                checkWriteStoragePermission();
-                return true;
-            }
-        });
+//        mRecordImageButton.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                mIsTimelapse =true;
+//                mRecordImageButton.setImageResource(R.mipmap.btn_timelapse);
+//                checkWriteStoragePermission();
+//                return true;
+//            }
+//        });
     }
 
     @Override
@@ -684,7 +706,7 @@ public class Camera2VideoImageActivity extends AppCompatActivity {
 
     private void createVideoFolder() {
         File movieFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
-        mVideoFolder = new File(movieFile, "camera2VideoImage");
+        mVideoFolder = new File(movieFile, "tanzania_videos");
         if(!mVideoFolder.exists()) {
             mVideoFolder.mkdirs();
         }
@@ -692,7 +714,7 @@ public class Camera2VideoImageActivity extends AppCompatActivity {
 
     private File createVideoFileName() throws IOException {
         String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String prepend = "VIDEO_" + timestamp + "_";
+        String prepend = "VIDEO_" +value+"_"+ timestamp + "_";
         File videoFile = File.createTempFile(prepend, ".mp4", mVideoFolder);
         mVideoFileName = videoFile.getAbsolutePath();
         return videoFile;
@@ -700,7 +722,7 @@ public class Camera2VideoImageActivity extends AppCompatActivity {
 
     private void createImageFolder() {
         File imageFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        mImageFolder = new File(imageFile, "camera2VideoImage");
+        mImageFolder = new File(imageFile, "tanzania_images");
         if(!mImageFolder.exists()) {
             mImageFolder.mkdirs();
         }
@@ -708,7 +730,7 @@ public class Camera2VideoImageActivity extends AppCompatActivity {
 
     private File createImageFileName() throws IOException {
         String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String prepend = "IMAGE_" + timestamp + "_";
+        String prepend = "IMAGE_"+value+"__" + timestamp + "_";
         File imageFile = File.createTempFile(prepend, ".jpg", mImageFolder);
         mImageFileName = imageFile.getAbsolutePath();
         return imageFile;
@@ -757,7 +779,7 @@ public class Camera2VideoImageActivity extends AppCompatActivity {
         mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         mMediaRecorder.setOutputFile(mVideoFileName);
-        mMediaRecorder.setVideoEncodingBitRate(1000000);
+        mMediaRecorder.setVideoEncodingBitRate(6000000);
         mMediaRecorder.setVideoFrameRate(30);
         mMediaRecorder.setVideoSize(mVideoSize.getWidth(), mVideoSize.getHeight());
         mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
