@@ -262,6 +262,7 @@ public class Camera2VideoImageActivity extends AppCompatActivity {
     private File[] files;
     private int fileIndex; //to track the file number when using next button
     private String value; //the emotion
+    private String fileName;
 
     private static SparseIntArray ORIENTATIONS = new SparseIntArray();
     static {
@@ -302,7 +303,19 @@ public class Camera2VideoImageActivity extends AppCompatActivity {
         directory = new File(vid_path+value);
         files = directory.listFiles();
         if(files.length>0){
-            videoView.setVideoPath(vid_path+value+"/"+files[0].getName());
+            String separator=".";
+            if(!files[0].getName().split(Pattern.quote(separator))[1].equals("mp4")){
+                mImageView.setVisibility(View.VISIBLE);
+                videoView.setVisibility(View.INVISIBLE);
+                Bitmap myBitmap = BitmapFactory.decodeFile(vid_path +value+"/"+ files[fileIndex].getName());
+                mImageView.setImageBitmap(myBitmap);
+            }
+            else {
+                videoView.setVisibility(View.VISIBLE);
+                mImageView.setVisibility(View.INVISIBLE);
+                videoView.setVideoPath(vid_path + value + "/" + files[0].getName());
+                videoView.start();
+            }
             fileIndex=0;
 //        Log.d("Files", "Size: "+ files.length);
         }
@@ -332,11 +345,24 @@ public class Camera2VideoImageActivity extends AppCompatActivity {
                 directory = new File(vid_path+value);
                 files = directory.listFiles();
                 if(files.length>0){
-                    Log.d("Files", "Size: "+ files.length);
-                    mImageView.setVisibility(View.INVISIBLE);
-                    videoView.setVisibility(View.VISIBLE);
-                    videoView.setVideoPath(vid_path+value+"/"+files[0].getName());
-                    videoView.start();
+                    String separator=".";
+                    if(!files[0].getName().split(Pattern.quote(separator))[1].equals("mp4")){
+                        mImageView.setVisibility(View.VISIBLE);
+                        videoView.setVisibility(View.INVISIBLE);
+                        Bitmap myBitmap = BitmapFactory.decodeFile(vid_path +value+"/"+ files[fileIndex].getName());
+                        mImageView.setImageBitmap(myBitmap);
+                    }
+                    else {
+                        videoView.setVisibility(View.VISIBLE);
+                        mImageView.setVisibility(View.INVISIBLE);
+                        videoView.setVideoPath(vid_path + value + "/" + files[0].getName());
+                        videoView.start();
+                    }
+//                    Log.d("Files", "Size: "+ files.length);
+//                    mImageView.setVisibility(View.INVISIBLE);
+//                    videoView.setVisibility(View.VISIBLE);
+//                    videoView.setVideoPath(vid_path+value+"/"+files[0].getName());
+//                    videoView.start();
                     fileIndex=0;
                 }
 //                File directory = new File(vid_path+value);
