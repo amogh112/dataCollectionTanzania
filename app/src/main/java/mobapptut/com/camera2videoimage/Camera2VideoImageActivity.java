@@ -740,7 +740,8 @@ public class Camera2VideoImageActivity extends AppCompatActivity {
 
     private File createVideoFileName() throws IOException {
         String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String prepend = "VIDEO_" +value+"_"+ timestamp + "_";
+        String separator=".";
+        String prepend = "VIDEO_" +value+"_"+files[fileIndex].getName().split(Pattern.quote(separator))[0] +"_"+ timestamp + "_";
         File videoFile = File.createTempFile(prepend, ".mp4", mVideoFolder);
         mVideoFileName = videoFile.getAbsolutePath();
         return videoFile;
@@ -756,7 +757,8 @@ public class Camera2VideoImageActivity extends AppCompatActivity {
 
     private File createImageFileName() throws IOException {
         String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String prepend = "IMAGE_"+value+"__" + timestamp + "_";
+        String separator=".";
+        String prepend = "IMAGE_"+value+"__"+files[fileIndex].getName().split(Pattern.quote(separator))[0]+"__" + timestamp + "_";
         File imageFile = File.createTempFile(prepend, ".jpg", mImageFolder);
         mImageFileName = imageFile.getAbsolutePath();
         return imageFile;
